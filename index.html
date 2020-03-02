@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video playback on scroll</title>
+    <style type="text/css">
+      body {
+        height: 12000px;
+      }
+      .video_section video {
+        outline: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video_section" id="set-height">
+      <video id="v0" tabindex="0" autobuffer preload>
+        <source src="intro.mp4" type="video/mp4" />
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
+    <script>
+      var frameNumber = 0,
+        playbackConst = 1000,
+        setHeight = document.getElementById("set-height"),
+        vid = document.getElementById("v0");
+      vid.addEventListener("loadedmetadata", function() {
+        setHeight.style.height =
+          Math.floor(vid.duration) * playbackConst + "px";
+      });
+      function scrollPlay() {
+        var frameNumber = window.pageYOffset / playbackConst;
+        vid.currentTime = frameNumber;
+        window.requestAnimationFrame(scrollPlay);
+      }
+
+      window.requestAnimationFrame(scrollPlay);
+    </script>
+  </body>
+</html>
